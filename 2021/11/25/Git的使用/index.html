@@ -1,0 +1,278 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Git使用 | Blog</title><meta name="keywords" content="GitHub"><meta name="author" content="Xiao wen"><meta name="copyright" content="Xiao wen"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Git使用 (本地)初始化设置 Git是分布式版本控制系统，因此每个机器机器都必须自报家门：你的名字和Email地址 在命令行输入： 12git config --global user.name &quot;Your Name&quot;git config --global user.email &quot;email@example.com&quot;   PS：git config命令的-">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Git使用">
+<meta property="og:url" content="https://xiaowenmimimi.github.io/2021/11/25/Git%E7%9A%84%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="Blog">
+<meta property="og:description" content="Git使用 (本地)初始化设置 Git是分布式版本控制系统，因此每个机器机器都必须自报家门：你的名字和Email地址 在命令行输入： 12git config --global user.name &quot;Your Name&quot;git config --global user.email &quot;email@example.com&quot;   PS：git config命令的-">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg">
+<meta property="article:published_time" content="2021-11-25T11:11:24.494Z">
+<meta property="article:modified_time" content="2021-11-25T11:16:21.156Z">
+<meta property="article:author" content="Xiao wen">
+<meta property="article:tag" content="GitHub">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://xiaowenmimimi.github.io/2021/11/25/Git%E7%9A%84%E4%BD%BF%E7%94%A8/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":400},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Git使用',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-11-25 19:16:21'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://cdn.jsdelivr.net/gh/xiaowenmimimi/myImages@main/blog/头像_大户爱.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">6</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">7</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 档案</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 链接</span><i class="fas fa-chevron-down expand hide"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Blog</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 档案</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 链接</span><i class="fas fa-chevron-down expand hide"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Git使用</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-11-25T11:11:24.494Z" title="发表于 2021-11-25 19:11:24">2021-11-25</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-11-25T11:16:21.156Z" title="更新于 2021-11-25 19:16:21">2021-11-25</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/GitHub/">GitHub</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Git使用"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h3 id="Git使用-本地"><a href="#Git使用-本地" class="headerlink" title="Git使用 (本地)"></a>Git使用 (本地)</h3><p><strong>初始化设置</strong></p>
+<p><code>Git</code>是分布式版本控制系统，因此每个机器机器都必须自报家门：你的<strong>名字</strong>和<strong>Email地址</strong></p>
+<p>在命令行输入：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.name &quot;Your Name&quot;</span><br><span class="line">git config --global user.email &quot;email@example.com&quot;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>PS：<code>git config</code>命令的<code>--global</code>参数，用了这个参数，表示你这台机器上所有的<code>Git</code>仓库都会使用这个配置，当然也可以对某个仓库指定不同的用户名和<code>Email</code>地址。</strong></p>
+</blockquote>
+<p><strong>初始化仓库</strong></p>
+<p>在空的目录下,通过<code>git init</code>命令把这个目录变成<code>Git</code>可以管理的仓库</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git init</span><br></pre></td></tr></table></figure>
+
+<p><strong>运行成功后</strong>可以发现当前目录下多了一个<code>.git</code>的目录，这个目录是<code>Git</code>来跟踪管理版本库的，切勿随意修改破坏<code>Git</code>仓库。</p>
+<p><strong>添加文件到仓库</strong></p>
+<p>使用git命令将文本添加到版本库中</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git add &lt;文件名 + 后缀名&gt;	   # 添加单个文件</span><br><span class="line">git add .			       # 添加目录下的所有文件</span><br></pre></td></tr></table></figure>
+
+<p>执行上面的命令，没有任何显示，这就对了，<code>Unix</code>的哲学是<strong>“没有消息就是好消息”</strong>，说明添加成功。</p>
+<p>把文件提交到本地仓库</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git commit -m &quot;wrote a readme file&quot;</span><br></pre></td></tr></table></figure>
+
+<p>后面输入的是本次提交的说明，可以输入任意内容，当然<strong>最好是有意义</strong>的，这样你就能从历史记录里方便地找到改动记录。</p>
+<blockquote>
+<p><strong>PS：在执行 commit 之前，都先执行一下 add 操作，避免有文件被漏掉了</strong></p>
+</blockquote>
+<p><strong>查看版本库状态</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git status 		# 查看当前git版本库的状态(查看缓存区中的文件内容)</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>提交日志</strong></p>
+<p>版本控制系统肯定有某个命令可以告诉我们<strong>历史记录</strong>，在<code>Git</code>中，我们用<code>git log</code>命令查看：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git log</span><br></pre></td></tr></table></figure>
+
+<p>格式化日志，只显示主要的日志信息</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git log --pretty=oneline</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>查看差异</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff 		# 查看不同版本之间的文件差异</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>版本回退</strong></p>
+<p>首先，<code>Git</code>必须知道当前版本是哪个版本，在<code>Git</code>中，用<code>HEAD</code>表示当前版本，上一个版本就是<code>HEAD^</code>，上上一个版本就是<code>HEAD^^</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard HEAD^			# 把当前版本回退到上一个版本</span><br><span class="line">git reset --hard &lt;commit id&gt;	# 回到指定版本</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>撤销修改</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout -- filename		# 让这个文件回到最近一次 git commit 或 git add 时的状态</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>PS：<code>git checkout -- file</code> 命令中的 <code>--</code> 很重要，没有 <code>--</code> ，就变成了“切换到另一个分支”的命令</strong></p>
+</blockquote>
+<p><strong>删除文件</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rm &lt;文件名 + 后缀名&gt;</span><br></pre></td></tr></table></figure>
+
+<p>这个时候，<code>Git</code>知道你删除了文件，因此，工作区和版本库就不一致了，<code>git status</code>命令会立刻告诉你哪些文件被删除了</p>
+<p>删除完成后需要 <code>commit</code></p>
+<p>如果删除了想恢复,可以使用 <code>reset</code> 版本恢复</p>
+<p><strong>分支管理</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">git branch				# 查看分支</span><br><span class="line">git branch &lt;name&gt;		# 创建分支</span><br><span class="line">git checkout &lt;name&gt; 	# 切换分支</span><br><span class="line">git checkout -b &lt;name&gt;	# 创建 + 切换分支</span><br><span class="line">git merge &lt;name&gt;		# 将某分支合并到当前分支</span><br><span class="line">git branch -d &lt;name&gt;	# 删除分支</span><br></pre></td></tr></table></figure>
+
+<p><strong>git 文件冲突</strong>分支1中有个文件跟其他分支文件一样，如果同时发生修改了，进行合并，就出现文件冲突问题。</p>
+<blockquote>
+<p><strong>PS：在git中进行 crud 操作时都需要执行 git add 文件这个操作，底层操作将操作文件添加一个叫缓存区区域中缓存，当操作完毕之后，使用 git commit 操作，进行统一提交，将编辑文件统一同步版本中。</strong></p>
+</blockquote>
+<h3 id="远程仓库"><a href="#远程仓库" class="headerlink" title="远程仓库"></a>远程仓库</h3><p>创建仓库步骤：</p>
+<p>1：初始化本地的仓库  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git init</span><br></pre></td></tr></table></figure>
+
+<p>2：设置码云的用户名跟码云注册邮箱</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.name &quot;码云里面用户名&quot;</span><br><span class="line">git config --global user.email &quot;码云里面注册邮箱/手机&quot;</span><br></pre></td></tr></table></figure>
+
+<p>3：配置忽略提交的文件.gitignore </p>
+<p>4: 将项目添加到本地仓库</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git add .</span><br><span class="line">git commit -m &quot;项目初始化&quot;</span><br></pre></td></tr></table></figure>
+
+<p>5：配置远程仓库请求路径</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote add origin 自己创建仓库路径</span><br></pre></td></tr></table></figure>
+
+<p>6：将本地仓库中项目推送到远程仓库</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push -u origin master</span><br></pre></td></tr></table></figure>
+
+<p>7: 弹出一个框， 输入账号与密码</p>
+<p>8：将远程仓库中项目拉到本地仓库中</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git pull</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="开发中使用-Git-IDEA"><a href="#开发中使用-Git-IDEA" class="headerlink" title="开发中使用 Git (IDEA)"></a>开发中使用 Git (IDEA)</h3><h4 id="在-Idea-中克隆远程仓库"><a href="#在-Idea-中克隆远程仓库" class="headerlink" title="在 Idea 中克隆远程仓库"></a>在 Idea 中克隆远程仓库</h4><p>打开 Idea，在初始化界面克隆远程仓库</p>
+<img src="https://cdn.jsdelivr.net/gh/xiaowenmimimi/myImages@main/git/image-20211122220554554.png" style="zoom:80%;" />
+
+<img src="https://cdn.jsdelivr.net/gh/xiaowenmimimi/myImages@main/git/Snipaste_2021-11-22_22-08-00.png" style="zoom: 80%;" />
+
+<p>以上步骤就可以将项目从远程导入到 Idea 了</p>
+<p>在成功导入项目以后，如果 idea 右上角弹出一个提示框，里面有 Add root 的字眼，直接点击即可，代表让 idea 识别这是一个 git 项目。</p>
+<blockquote>
+<p><strong>PS：需要注意的是，在微服务开发或者按模块开发的情况下，因为一个仓库下可能包含多个项目文件，因此建议使用命令 git clone 先将远程仓库克隆到本地，然后再将仓库中的项目一个个导入到 idea</strong></p>
+</blockquote>
+<h4 id="分支切换与合并"><a href="#分支切换与合并" class="headerlink" title="分支切换与合并"></a>分支切换与合并</h4><p>在 idea 中，分支的相关操作都在 idea 项目界面的右下角最角落的位置，你可以通过这边去新建本地分支/切换本地或远程分支，创建/删除/合并分支等等操作</p>
+<p><img src="https://cdn.jsdelivr.net/gh/xiaowenmimimi/myImages@main/git/Snipaste_2021-11-22_22-11-17.png" alt="Snipaste_2021-11-22_22-11-17"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/xiaowenmimimi/myImages@main/git/Snipaste_2021-11-22_22-13-48.png" alt="Snipaste_2021-11-22_22-13-48"></p>
+<p>分支创建成功后，会自动将之前（master）所在分支的文件同步到新创建的分支上，此时新创建的分支与原来的分支文件内容是一致的，你可以直接从当前分支切换到某一个分支，也可以去选择<strong>将哪一个分支合并到当前分支</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/xiaowenmimimi/myImages@main/git/Snipaste_2021-11-22_22-15-33.png" alt="Snipaste_2021-11-22_22-15-33"></p>
+<h4 id="文件新增编辑和删除"><a href="#文件新增编辑和删除" class="headerlink" title="文件新增编辑和删除"></a>文件新增编辑和删除</h4><p>在 idea 中，使用不同的颜色来标识文件的不同状态。</p>
+<p><strong>棕色</strong>色代表未被 Git 管理（未添加到暂存区）</p>
+<p><strong>绿色</strong>代表新增的文件且已经被加入到暂存区了</p>
+<p><strong>蓝色</strong>代表该文件已经提交到远程且该文件被编辑过了</p>
+<p><strong>黑色</strong>代表该文件在当前版本与远程是一致的</p>
+<p><strong>灰色</strong>表示该文件之前被提交到仓库过（不管是远程还是本地），但是他已经被删除了</p>
+<p><strong>红色</strong>表示该文件的内容出现了冲突</p>
+<p>创建新文件时，idea 会弹出一个提示框，确认是否要添加到 git 暂存区，如果此时点击 No 的话，该文件就不会被添加到暂存区，且颜色为棕红色，添加完成后，文件会由棕色变为绿色，此时对一个远程的文件进行了更新，那么他就会从黑色变为蓝色</p>
+<p>当你开发完成以后，可以进行提交</p>
+<img src="https://cdn.jsdelivr.net/gh/xiaowenmimimi/myImages@main/git/Snipaste_2021-11-22_22-23-21.png" style="zoom:80%;" />
+
+
+
+<h4 id="团队开发注意事项"><a href="#团队开发注意事项" class="headerlink" title="团队开发注意事项"></a>团队开发注意事项</h4><ol>
+<li>组员每次开发，都先 push 到自己的远程分支</li>
+<li>每次对 master 分支做合并或推送之前，原地备份代码</li>
+<li>确保自己分支的代码与 master 分支都没有错误以后，将本地 master 推送到远程</li>
+<li>开发前，先切换到 master 分支，更新代码，确保是最新版本，如果有更新下来内容，同样先对整个项目进行备份，再切换到自己的分支，然后将 master 合并到自己的分支上</li>
+<li>除了将代码提交到自己的分支以外，都必须再将自己的代码合并到master</li>
+<li>再次强调，每次合并或推送前，都先对项目进行备份，避免操作不熟练导致出错后代码丢失</li>
+</ol>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Xiao wen</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://xiaowenmimimi.github.io/2021/11/25/Git%E7%9A%84%E4%BD%BF%E7%94%A8/">https://xiaowenmimimi.github.io/2021/11/25/Git%E7%9A%84%E4%BD%BF%E7%94%A8/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://xiaowenmimimi.github.io" target="_blank">Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/GitHub/">GitHub</a></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2021/11/25/Java/mybatis-plus%E6%80%BB%E7%BB%93/"><img class="next-cover" src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">MyBatis-plus (MP) 使用</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://cdn.jsdelivr.net/gh/xiaowenmimimi/myImages@main/blog/头像_大户爱.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Xiao wen</div><div class="author-info__description">mimimi</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">6</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">7</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/xiaowenmimimi" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:fengxiaoxiao1231@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Git%E4%BD%BF%E7%94%A8-%E6%9C%AC%E5%9C%B0"><span class="toc-text">Git使用 (本地)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93"><span class="toc-text">远程仓库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%80%E5%8F%91%E4%B8%AD%E4%BD%BF%E7%94%A8-Git-IDEA"><span class="toc-text">开发中使用 Git (IDEA)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9C%A8-Idea-%E4%B8%AD%E5%85%8B%E9%9A%86%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93"><span class="toc-text">在 Idea 中克隆远程仓库</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%86%E6%94%AF%E5%88%87%E6%8D%A2%E4%B8%8E%E5%90%88%E5%B9%B6"><span class="toc-text">分支切换与合并</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E6%96%B0%E5%A2%9E%E7%BC%96%E8%BE%91%E5%92%8C%E5%88%A0%E9%99%A4"><span class="toc-text">文件新增编辑和删除</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9B%A2%E9%98%9F%E5%BC%80%E5%8F%91%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-text">团队开发注意事项</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/11/25/Git%E7%9A%84%E4%BD%BF%E7%94%A8/" title="Git使用"><img src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Git使用"/></a><div class="content"><a class="title" href="/2021/11/25/Git%E7%9A%84%E4%BD%BF%E7%94%A8/" title="Git使用">Git使用</a><time datetime="2021-11-25T11:11:24.494Z" title="发表于 2021-11-25 19:11:24">2021-11-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/11/25/Java/mybatis-plus%E6%80%BB%E7%BB%93/" title="MyBatis-plus (MP) 使用"><img src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="MyBatis-plus (MP) 使用"/></a><div class="content"><a class="title" href="/2021/11/25/Java/mybatis-plus%E6%80%BB%E7%BB%93/" title="MyBatis-plus (MP) 使用">MyBatis-plus (MP) 使用</a><time datetime="2021-11-25T10:10:08.210Z" title="发表于 2021-11-25 18:10:08">2021-11-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/11/22/Java/RESTful%E9%A3%8E%E6%A0%BC/" title="RESTful风格"><img src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="RESTful风格"/></a><div class="content"><a class="title" href="/2021/11/22/Java/RESTful%E9%A3%8E%E6%A0%BC/" title="RESTful风格">RESTful风格</a><time datetime="2021-11-21T16:08:41.380Z" title="发表于 2021-11-22 00:08:41">2021-11-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/11/16/Java/Springboot%E9%9B%86%E6%88%90activiti7/" title="SpringBoot集成activiti7"><img src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="SpringBoot集成activiti7"/></a><div class="content"><a class="title" href="/2021/11/16/Java/Springboot%E9%9B%86%E6%88%90activiti7/" title="SpringBoot集成activiti7">SpringBoot集成activiti7</a><time datetime="2021-11-16T14:54:10.664Z" title="发表于 2021-11-16 22:54:10">2021-11-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/11/16/Java/%E6%95%B0%E6%8D%AE%E7%9A%84%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BAPOI/" title="数据的导入导出(POI)"><img src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="数据的导入导出(POI)"/></a><div class="content"><a class="title" href="/2021/11/16/Java/%E6%95%B0%E6%8D%AE%E7%9A%84%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BAPOI/" title="数据的导入导出(POI)">数据的导入导出(POI)</a><time datetime="2021-11-16T13:22:35.317Z" title="发表于 2021-11-16 21:22:35">2021-11-16</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2021 By Xiao wen</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
