@@ -1,0 +1,438 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Redis的使用 | Blog</title><meta name="keywords" content="Redis"><meta name="author" content="Xiao wen"><meta name="copyright" content="Xiao wen"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Redis简介 Redis是以key-value形式存储,和传统的关系型数据库不一样.不一定遵循传统数据库的一些基本要求.(非关系型的,分布式的,开源的,水平可拓展的)  优点:  对数据高并发读写(直接是内存中进行读写的) 对海量数据的高效率存储和访问 对数据的可拓展性和高可用性. 单线程操作,每个操作都是原子操作,没有并发相关问题(redis 6)  缺点:  redis(ACID处理非常简单">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis的使用">
+<meta property="og:url" content="https://xiaowenmimimi.github.io/2021/11/27/Redis/index.html">
+<meta property="og:site_name" content="Blog">
+<meta property="og:description" content="Redis简介 Redis是以key-value形式存储,和传统的关系型数据库不一样.不一定遵循传统数据库的一些基本要求.(非关系型的,分布式的,开源的,水平可拓展的)  优点:  对数据高并发读写(直接是内存中进行读写的) 对海量数据的高效率存储和访问 对数据的可拓展性和高可用性. 单线程操作,每个操作都是原子操作,没有并发相关问题(redis 6)  缺点:  redis(ACID处理非常简单">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg">
+<meta property="article:published_time" content="2021-11-27T15:24:21.686Z">
+<meta property="article:modified_time" content="2021-11-27T15:26:20.140Z">
+<meta property="article:author" content="Xiao wen">
+<meta property="article:tag" content="Redis">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://xiaowenmimimi.github.io/2021/11/27/Redis/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":400},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Redis的使用',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-11-27 23:26:20'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://cdn.jsdelivr.net/gh/xiaowenmimimi/myImages@main/blog/头像_大户爱.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">8</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">10</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 档案</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 链接</span><i class="fas fa-chevron-down expand hide"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Blog</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 档案</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 链接</span><i class="fas fa-chevron-down expand hide"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Redis的使用</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-11-27T15:24:21.686Z" title="发表于 2021-11-27 23:24:21">2021-11-27</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-11-27T15:26:20.140Z" title="更新于 2021-11-27 23:26:20">2021-11-27</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Redis/">Redis</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Redis的使用"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h3 id="Redis简介"><a href="#Redis简介" class="headerlink" title="Redis简介"></a>Redis简介</h3><blockquote>
+<p><a target="_blank" rel="noopener" href="http://try.redis.io/">Redis</a>是以key-value形式存储,和传统的关系型数据库不一样.不一定遵循传统数据库的一些基本要求.(非关系型的,分布式的,开源的,水平可拓展的)</p>
+</blockquote>
+<p><strong>优点:</strong></p>
+<ul>
+<li>对数据高并发读写(直接是内存中进行读写的)</li>
+<li>对海量数据的高效率存储和访问</li>
+<li>对数据的可拓展性和高可用性.</li>
+<li>单线程操作,每个操作都是原子操作,没有并发相关问题(redis 6)</li>
+</ul>
+<p><strong>缺点:</strong></p>
+<ul>
+<li>redis(ACID处理非常简单) </li>
+<li>无法做太复杂的关系数据库模型</li>
+</ul>
+<blockquote>
+<p>Redis是以key-value store存储.<br>键可以包含:(string)字符串,哈希,(list)链表,(set)集合,(zset)有序集合.这些数据集合都指出<code>push/pop,add/remove</code>及取交集和并集以及更丰富的操作.redis支持各种不同方式排序,为了保证效率,数据都是缓存在内存中.它可以从周期性的把更新的数据写入到磁盘或者把修改操作写入追加的文件中.</p>
+</blockquote>
+<p><strong>redis定位是缓存, 提高数据读写速度, 减轻对数据库存储与访问压力</strong></p>
+<h3 id="Redis的安装"><a href="#Redis的安装" class="headerlink" title="Redis的安装"></a>Redis的安装</h3><blockquote>
+<p>Window在GitHub上搜索安装,  Linux直接在官网下载即可</p>
+<p>Redis默认端口是: 6379</p>
+<p>安装好后会自动启动服务器,并且没有密码</p>
+<p>若要设置密码,  可在安装目录下打开<code>redis.windows-service.conf</code>文件,  找到<code>requirepass</code>字段(大约443行),  将注释解开后可自定义密码(<strong>需要重启Redis服务</strong>)</p>
+<p>进入到安装目录下,双击运行redis-cli.exe程序,  或者在<code>cmd</code>中输入redis-cli(若设置密码则输入<code>redis-cli -a 密码</code>)</p>
+</blockquote>
+<h3 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h3><p><strong>String类型</strong></p>
+<blockquote>
+<p>String类型包含多种类型的特殊类型,并且是二进制安全的.比如序列化的对象进行存储,比如一张图片进行二进制存储.,比如一个简单的</p>
+<p>Map&lt;String,  String&gt;  map</p>
+<p>map.put(“name”, Json.toJsonString(user));</p>
+<p>类型命令 key 参数数据</p>
+<p><strong>set key value -&gt; 存入键值对</strong><br><strong>get key -&gt; 根据键取出值</strong></p>
+<p><strong>incr key -&gt; 把值递增1</strong><br><strong>decr key -&gt; 把值递减1</strong></p>
+<p><strong>del key -&gt; 根据键删除键值对</strong></p>
+<p><strong>setex key timeout value -&gt; 存入键值对,timeout表示失效时间,单位s</strong></p>
+<p><strong>ttl key-&gt;可以查询出当前的key还剩余多长时间过期</strong></p>
+<p><strong>setnx key value -&gt; 如果key已经存在,不做操作, 如果key不存在,直接添加</strong></p>
+<p>incrby key num -&gt; 偏移值<br>mset k1 v1 k2 v2 … -&gt; 批量存入键值对<br>mget k1 k2 … -&gt; 批量取出键值<br>append key ‘value’ -&gt; 原值后拼接新内容<br>setnx key value -&gt; 存入键值对,键存在时不存入<br>setex key timeout value -&gt; 存入键值对,timeout表示失效时间,单位s<br>ttl -&gt;可以查询出当前的key还剩余多长时间过期<br>setrange key index value -&gt; 修改键对应的值,index表示开始的索引位置</p>
+</blockquote>
+<p><strong>应用情景</strong></p>
+<blockquote>
+<p>计数器：许多运用都会使用redis作为计数的基础工具，他可以实现快速计数、查询缓存的功能，同时数据可以异步落地到其他的数据源。<br>如：视频播放数系统就是使用redis作为视频播放数计数的基础组件。</p>
+<p>incr  viewnum 1</p>
+<p>共享session：出于负载均衡的考虑，分布式服务会将用户信息的访问均衡到不同服务器上， 用户刷新一次访问可能会需要重新登录，为避免这个问题可以用redis将用户session集中管理，在这种模式下只要保证redis的高可用和扩展性的，每次获取用户更新或查询登录信息都直接从redis中集中获取。</p>
+</blockquote>
+<p><strong>hash类型</strong></p>
+<blockquote>
+<p>Hash类型是String类型的field和value的映射表.或者说是一个String集合.它特别适合存储对象,相比较而言,讲一个对象存储在Hash类型里要比存储在String类型里占用更少的内存空间,并方便存储整个对象</p>
+<p>Map&lt;string, Map&lt;string, ?&gt;&gt; map</p>
+<p><strong>hset key hashkey hashvalue -&gt; 存入一个hash对象</strong><br><strong>hget key hashkey -&gt; 根据hash对象键取去值</strong><br><strong>hexists key hashkey -&gt; 判断hash对象是含有某个键</strong><br><strong>hdel key hashkey -&gt; 根据hashkey删除hash对象键值对</strong></p>
+<p>hincrby key hashkey 递增值 -&gt; 递增hashkey对应的值<br>hlen key -&gt; 获取hash对象键的数量<br>hkeys key -&gt; 获取hash对象的所有键<br>hvals key -&gt; 获取hash对象的所有值<br>hgetall key -&gt; 获取hash对象的所有数据</p>
+<p>同样有hsetnx,其作用跟用法和setnx一样</p>
+</blockquote>
+<p><strong>应用情景</strong></p>
+<blockquote>
+<p>哈希结构相对于字符串序列化缓存信息更加直观，并且在更新操作上更加便捷。<br>所以常常用于<strong>用户信息</strong>等管理，但是哈希类型和关系型数据库有所不同，哈希类型是稀疏的，<br>而关系型数据库是完全结构化的，关系型数据库可以做复杂的关系查询，而redis去模拟关系型复杂查询<br>开发困难，维护成本高</p>
+</blockquote>
+<p><strong>list类型</strong></p>
+<blockquote>
+<p>Redis中的List类似Java中的queue,也可以当做List来用.<br>List类型是一个链表结构的集合,其主要功能有push,pop,获取元素等.更详细的说,List类型是一个双端链表的结构,我们可以通过相关操作进行集合的头部或者尾部添加删除元素,list的设计非常简单精巧,即可以作为栈,又可以作为队列.满足绝大多数需求.</p>
+<p>Map&lt;String, List&gt;</p>
+<p><strong>rpush key value -&gt; 往列表右边添加数据</strong><br><strong>lrange key start end -&gt; 范围显示列表数据,全显示则设置0 -1</strong><br><strong>lpush key value -&gt; 往列表左边添加数据</strong><br><strong>lpop key -&gt; 弹出列表最左边的数据</strong><br><strong>rpop key -&gt; 弹出列表最右边的数据</strong><br><strong>llen key -&gt; 获取列表长度</strong></p>
+<p>linsert key before/after refVal newVal -&gt; 参考值之前/后插入数据<br>lset key index value -&gt; 根据索引修改数据<br>lrem key count value -&gt; 在列表中按照个数删除数据<br>ltrim key start end -&gt; 范围截取列表<br>lindex key index -&gt; 根据索引取列表中数据</p>
+</blockquote>
+<p><strong>应用场景</strong></p>
+<blockquote>
+<p>1.用户收藏文章列表：<br>xxxx_user_articles:uid    [aid1, aid2, aid3…..]</p>
+</blockquote>
+<p><strong>set类型</strong></p>
+<blockquote>
+<p>Set集合是string类型的无序集合,set是通过hashtable实现的,对集合我们可以取交集,并集,差集.</p>
+<p><strong>sadd key value -&gt; 往set集合中添加元素</strong><br><strong>smembers key -&gt; 列出set集合中的元素</strong><br><strong>srem key value -&gt; 删除set集合中的元素</strong><br><strong>spop key count -&gt; 随机弹出集合中的元素</strong></p>
+<p>sdiff key1 key2 -&gt; 返回key1中特有元素(差集)<br>sdiffstore var key1 key2 -&gt; 返回key1中特有元素存入另一个set集合<br>sinter key1 key2 -&gt; 返回两个set集合的交集<br>sinterstore var key1 key2 -&gt; 返回两个set集合的交集存入另一个set集合<br>sunion  key1 key2 -&gt; 返回两个set集合的并集<br>sunionstore var key1 key2 -&gt; 返回两个set集合的并集存入另一个set集合<br>smove key1 key2 value -&gt; 把key1中的某元素移入key2中<br>scard key -&gt; 返回set集合中元素个数<br>sismember key value -&gt; 判断集合是否包含某个值<br>srandmember key count -&gt; 随机获取set集合中元素</p>
+</blockquote>
+<p><strong>应用场景</strong></p>
+<blockquote>
+<p>1，去重；</p>
+<p>2，抽奖;<br>          1&gt;准备一个抽奖池: sadd luckydraw 1 2 3 4 5 6 7 8 9 10 11 12 13<br>          2&gt;抽3个三等奖: spop luckydraw 3<br>          3&gt;抽2个二等奖: spop luckydraw 2<br>          4&gt;抽1个二等奖: spop luckydraw 1</p>
+</blockquote>
+<p><strong>sorted_set类型</strong></p>
+<blockquote>
+<p><strong>zadd key score column -&gt; 存入分数和名称</strong></p>
+<p><strong>zincrby key score column -&gt; 偏移名称对应的分数</strong></p>
+<p><strong>zrange key start end -&gt; 按照分数升序输出名称</strong><br><strong>zrevrange key start end -&gt; 按照分数降序输出名称</strong></p>
+<p><strong>zrank key name -&gt; 升序返回排名</strong><br><strong>zrevrank key name -&gt; 降序返回排名</strong><br><strong>zcard key -&gt; 返回元素个数</strong></p>
+<p>zrangebyscore key min max [withscores] -&gt; 按照分数范围升序输出名称<br>zrevrangebyscore key max min [withscores] -&gt; 按照分数范围降序输出名称<br>zrem key name -&gt; 删除名称和分数<br>zremrangebyscore key min max [withscores] -&gt; 根据分数范围删除元素<br>zremrangebyrank key start end -&gt; 根据排名删除元素<br>zcount key min max -&gt; 按照分数范围统计个数</p>
+</blockquote>
+<p><strong>应用场景</strong></p>
+<blockquote>
+<p>排行榜：有序集合经典使用场景。例如视频网站需要对用户上传的视频做排行榜，榜单维护可能是多方面：<br>按照时间、按照播放量、按照获得的赞数等。</p>
+</blockquote>
+<p><strong>总结</strong></p>
+<p>如果确定使用redis, 此时需要考虑使用哪个数据类型   【偏redis原生数据结构】</p>
+<ul>
+<li>如果要排序选用zset</li>
+<li>如果数据是多个且允许重复选用list</li>
+<li>如果数据是多个且不允许重复选用set</li>
+<li>剩下的使用string</li>
+<li>如果是对象类型也可使用hash</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">hash  ---&gt; 转换成json格式</span><br><span class="line">&#123;</span><br><span class="line">  key1:value1</span><br><span class="line">  key2:value2        ------&gt; &quot;&#123;key1:value1, key2:value2&#125;&quot;</span><br><span class="line">&#125;</span><br><span class="line"> JSON.toJsonString(map)</span><br></pre></td></tr></table></figure>
+
+<p><strong>有些</strong>公司约定: 所有的redis的key跟value都使用字符串(排除使用zset场景) 【偏redis String类型json结构】<br>1&gt;如果要排序选用zset<br>2&gt;剩下的使用string</p>
+<p>优点: java操作中如果使用各种类型: list set 其他的 操作redis时需要明确指定的泛型, 麻烦所以有些公司统一规范, 统一使用字符串, 减少泛型操作</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">List&lt;String&gt;list = ...</span><br><span class="line">Set&lt;String&gt; set = ....</span><br><span class="line">Map&lt;String, Object&gt; map = ....</span><br><span class="line"></span><br><span class="line">List&lt;Object&gt;  list = redis对象.getList</span><br><span class="line">Set&lt;Object&gt; set =redis对象.getSet   </span><br><span class="line">Map&lt;Object, Object&gt; map  =  redis对象.getMap</span><br></pre></td></tr></table></figure>
+
+<p><strong>设计 key  与 value值</strong></p>
+<blockquote>
+<p><strong>key的设计</strong><br>  <strong>1：唯一性</strong><br>  <strong>2：可读性</strong><br>    <strong>设计keyvalue 缓存用户收藏文章列表</strong><br>                    <strong>key                                value</strong><br>      <strong>article_favor_list:uid1         [1,2,3,4]</strong><br>      <strong>article_favor:uid2                 [1,2,3,4]</strong><br>  <strong>3：灵活性</strong><br>  <strong>4：时效性</strong></p>
+</blockquote>
+<p><strong>value值</strong><br> <strong>根据需求决定</strong></p>
+<h3 id="redis-进阶"><a href="#redis-进阶" class="headerlink" title="redis 进阶"></a>redis 进阶</h3><p><strong>redis高级命令</strong></p>
+<blockquote>
+<p><strong>返回满足的所有键</strong><br><strong>keys * (可以模糊查询)</strong><br><strong>exists 是否存在指定key</strong><br><strong>expire 设置某个key的过期时间.使用ttl查看剩余时间</strong><br><strong>persist 取消过期时间</strong></p>
+<p><strong>flushdb 清空当前数据库,flushall清空所有数据库</strong></p>
+<p>select 选择数据库 数据库为0到15(一共16个数据库) 默认进入的是0数据库<br>move [key] [数据库下标] 讲当前数据中的key转移到其他数据库中<br>randomkey 随机返回数据库里的一个key<br>rename重命名key<br>echo 打印名<br>dbsize 查看数据库的key数量<br>info 获取数据库信息<br>config get 实时传储收到的请求(返回相关的配置信息)<br>config get * 返回所有配置</p>
+</blockquote>
+<p><strong>redis安全性</strong></p>
+<blockquote>
+<p>因为redis速度非常快,所以在一台比较好的服务器下,一个外部用户在一秒内可以进行15w次的密码尝试,这意味你需要设定非常强大的密码来方式暴力破解.<br>vi编辑redis.conf文件,找到下面进行保存修改<br>requirepass [密码]<br>重启服务器 pkill redis-server<br>再次进入<code>cmd</code> 127.0.01:6379&gt;keys *<br>(error)NOAUTH Authentication required.<br>会发现没有权限进行查询auth [密码]<br>输入密码则成功进入<br>每次进入的时候都需要输入免密,还有种简单的方式:</p>
+<p>redis-cli -a [密码]</p>
+</blockquote>
+<p><strong>redis事务[拓展]</strong></p>
+<blockquote>
+<p>Redis的事务非常简单,使用方法如下:<br>首先是使用multi方法打开事务,然后进行设置,这时设置的数据会放到队列里进行保存.最后使用exec执行.把数据依次存储到redis中.使用discard方法取消事务.</p>
+</blockquote>
+<h3 id="实际运用"><a href="#实际运用" class="headerlink" title="实际运用"></a>实际运用</h3><p><strong>Jedis基本使用</strong></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">导入依赖:</span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>redis.clients<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jedis<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>配置</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 简单配置</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testJedisPool</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 1:创建Jedis连接池</span></span><br><span class="line">    JedisPool pool = <span class="keyword">new</span> JedisPool(<span class="string">&quot;localhost&quot;</span>, <span class="number">6379</span>);</span><br><span class="line">    <span class="comment">// 2:从连接池中获取Jedis对象</span></span><br><span class="line">    Jedis jedis = pool.getResource();</span><br><span class="line">    <span class="comment">/* 设置密码</span></span><br><span class="line"><span class="comment">	jedis.auth(密码); */</span></span><br><span class="line">    <span class="comment">// 3:TODO 调用API</span></span><br><span class="line">    System.out.println(jedis);</span><br><span class="line">    <span class="comment">// 4:关闭资源</span></span><br><span class="line">    jedis.close();</span><br><span class="line">    pool.destroy();</span><br><span class="line">&#125;</span><br><span class="line">---------------------------------------------</span><br><span class="line"><span class="comment">// 自定配置</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testTool</span><span class="params">()</span></span>&#123;</span><br><span class="line">    GenericObjectPoolConfig config = <span class="keyword">new</span> GenericObjectPoolConfig();</span><br><span class="line">    <span class="comment">////最大连接数, 默认8个</span></span><br><span class="line">    config.setMaxTotal(<span class="number">100</span>);</span><br><span class="line">    <span class="comment">////最大空闲连接数, 默认8个</span></span><br><span class="line">    config.setMaxIdle(<span class="number">20</span>);</span><br><span class="line">    <span class="comment">//获取连接时的最大等待毫秒数(如果设置为阻塞时BlockWhenExhausted),如果超时就抛异常, 小于零:阻塞不确定的时间,  默认-1</span></span><br><span class="line">    config.setMaxWaitMillis(-<span class="number">1</span>);</span><br><span class="line">    <span class="comment">//在获取连接的时候检查有效性, 默认false</span></span><br><span class="line">    config.setTestOnBorrow(<span class="keyword">true</span>);</span><br><span class="line">    JedisPool pool = <span class="keyword">new</span> JedisPool(config,<span class="string">&quot;192.168.122.128&quot;</span>,<span class="number">6379</span>,<span class="number">5000</span>,<span class="string">&quot;wolfcode&quot;</span>);</span><br><span class="line">    Jedis j = pool.getResource();</span><br><span class="line">    String name = j.get(<span class="string">&quot;name&quot;</span>);</span><br><span class="line">    System.out.println(name);</span><br><span class="line">    j.close();</span><br><span class="line">    pool.close();</span><br><span class="line">    pool.destroy();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>PS:  Jedis的API和<code>cmd</code>基本相同</strong></p>
+<p><strong>集成SpringBoot</strong></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">导入依赖:</span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-data-redis<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>配置(.yml文件)</strong></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">redis:</span></span><br><span class="line">    <span class="attr">host:</span> <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span></span><br><span class="line">    <span class="attr">port:</span> <span class="number">6379</span></span><br><span class="line">    <span class="attr">password:</span> <span class="string">admin</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>API使用</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Resource</span></span><br><span class="line"><span class="keyword">private</span> StringRedisTemplate template;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testRedisTemplate</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 操作string</span></span><br><span class="line">    template.opsForValue().xx();</span><br><span class="line">    <span class="comment">// 操作hash</span></span><br><span class="line">    template.opsForHash().xx();</span><br><span class="line">    <span class="comment">// 操作list</span></span><br><span class="line">    template.opsForList().xx();</span><br><span class="line">    <span class="comment">// 操作set</span></span><br><span class="line">    template.opsForSet().xx();</span><br><span class="line">    <span class="comment">// 操作zset</span></span><br><span class="line">    template.opsForZSet().xx();</span><br><span class="line">&#125;</span><br><span class="line">-----------------------------------------</span><br><span class="line">template.opsForValue();		<span class="comment">// 操作字符串</span></span><br><span class="line">template.opsForHash();		<span class="comment">// 操作hash</span></span><br><span class="line">template.opsForList();		<span class="comment">// 操作list</span></span><br><span class="line">template.opsForSet();		<span class="comment">// 操作set</span></span><br><span class="line">template.opsForZSet();		<span class="comment">// 操作有序set</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>PS:  Spring中redis的API和<code>cmd</code>并不相同,  可以通过见名知意调用API</strong></p>
+<h3 id="Redistemplate的方法"><a href="#Redistemplate的方法" class="headerlink" title="Redistemplate的方法"></a>Redistemplate的方法</h3><table>
+<thead>
+<tr>
+<th align="left">StringRedisTemplate</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>String</strong></td>
+<td></td>
+</tr>
+<tr>
+<td align="left">template.opsForValue().set(“k”,”v”)</td>
+<td>设置值</td>
+</tr>
+<tr>
+<td align="left">template.opsForValue().get(“k”)</td>
+<td>获取值</td>
+</tr>
+<tr>
+<td align="left">template.boundValueOps(“k”).increment(1)</td>
+<td>自增1</td>
+</tr>
+<tr>
+<td align="left">template.boundValueOps(“k”).increment(-1)</td>
+<td>自减1</td>
+</tr>
+<tr>
+<td align="left">template.opsForValue().set(“k”,”v”,20, TimeUnit.SECONDS)</td>
+<td>设置时间</td>
+</tr>
+<tr>
+<td align="left">template.opsForValue().setIfAbsent(“k”, “v”)</td>
+<td>存在 则不设置</td>
+</tr>
+<tr>
+<td align="left">template.getExpire(“k”)</td>
+<td>还剩余多长时间过期</td>
+</tr>
+<tr>
+<td align="left">template.delete(“k”)</td>
+<td>还剩余多长时间过期</td>
+</tr>
+<tr>
+<td align="left"><strong>Hash</strong></td>
+<td></td>
+</tr>
+<tr>
+<td align="left">template.opsForHash().put(“pig”,”name”,”peiqi”)</td>
+<td>设置</td>
+</tr>
+<tr>
+<td align="left">template.opsForHash().get(“pig”, “name”) 获取所有template.opsForHash().values(“pig”)</td>
+<td>获取</td>
+</tr>
+<tr>
+<td align="left">template.opsForHash().delete(“pig”,”name”)</td>
+<td>删除</td>
+</tr>
+<tr>
+<td align="left">jedis.hexists(“pig”,”name”)</td>
+<td>判断是否存在</td>
+</tr>
+<tr>
+<td align="left"><strong>List(左右同样)</strong></td>
+<td></td>
+</tr>
+<tr>
+<td align="left">template.opsForList().rightPush(“k”,”v”)</td>
+<td>添加</td>
+</tr>
+<tr>
+<td align="left">template.opsForList().rightPop(“k”)</td>
+<td>移出</td>
+</tr>
+<tr>
+<td align="left">template.opsForList().size(“k”)</td>
+<td>长度</td>
+</tr>
+<tr>
+<td align="left">template.opsForList().range(“list”, 0, -1)</td>
+<td>获取</td>
+</tr>
+<tr>
+<td align="left"><strong>Set</strong></td>
+<td></td>
+</tr>
+<tr>
+<td align="left">template.opsForSet().add(“k”,”v”)</td>
+<td>添加</td>
+</tr>
+<tr>
+<td align="left">template.opsForSet().remove(“k”,”v”)</td>
+<td>值移除</td>
+</tr>
+<tr>
+<td align="left">template.opsForSet().pop(“k”)</td>
+<td>直接移</td>
+</tr>
+<tr>
+<td align="left">template.opsForSet().size(“k”)</td>
+<td>长度</td>
+</tr>
+<tr>
+<td align="left">template.opsForSet().intersect(“k”, “k2”)</td>
+<td>交集</td>
+</tr>
+<tr>
+<td align="left">template.opsForSet().intersect(“k”, “k2”)</td>
+<td>并集</td>
+</tr>
+<tr>
+<td align="left">template.opsForSet().difference(“k”, “k2”)</td>
+<td>差集</td>
+</tr>
+<tr>
+<td align="left"><strong>sorted_set</strong></td>
+<td></td>
+</tr>
+<tr>
+<td align="left">zadd(“k”,1,”a”)</td>
+<td>增加</td>
+</tr>
+<tr>
+<td align="left">zrevrange(“k”, 0, -1)</td>
+<td>排名结果</td>
+</tr>
+<tr>
+<td align="left">zincrby(“k”,20,”a”)</td>
+<td>排名分数</td>
+</tr>
+<tr>
+<td align="left">zincrby(“k”,20,”a”)</td>
+<td>修改分数</td>
+</tr>
+<tr>
+<td align="left">zcard(“k”)</td>
+<td>数量</td>
+</tr>
+<tr>
+<td align="left">zrank(“k”,”a”)</td>
+<td>获取排名</td>
+</tr>
+</tbody></table>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Xiao wen</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://xiaowenmimimi.github.io/2021/11/27/Redis/">https://xiaowenmimimi.github.io/2021/11/27/Redis/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://xiaowenmimimi.github.io" target="_blank">Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Redis/">Redis</a></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2021/11/27/Vue(%E5%85%A5%E9%97%A8)/"><img class="next-cover" src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Vue的使用(入门)</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://cdn.jsdelivr.net/gh/xiaowenmimimi/myImages@main/blog/头像_大户爱.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Xiao wen</div><div class="author-info__description">mimimi</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">8</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">10</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/xiaowenmimimi" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:fengxiaoxiao1231@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Redis%E7%AE%80%E4%BB%8B"><span class="toc-text">Redis简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Redis%E7%9A%84%E5%AE%89%E8%A3%85"><span class="toc-text">Redis的安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-text">数据类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#redis-%E8%BF%9B%E9%98%B6"><span class="toc-text">redis 进阶</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%99%85%E8%BF%90%E7%94%A8"><span class="toc-text">实际运用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Redistemplate%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-text">Redistemplate的方法</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/11/27/Redis/" title="Redis的使用"><img src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Redis的使用"/></a><div class="content"><a class="title" href="/2021/11/27/Redis/" title="Redis的使用">Redis的使用</a><time datetime="2021-11-27T15:24:21.686Z" title="发表于 2021-11-27 23:24:21">2021-11-27</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/11/27/Vue(%E5%85%A5%E9%97%A8)/" title="Vue的使用(入门)"><img src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Vue的使用(入门)"/></a><div class="content"><a class="title" href="/2021/11/27/Vue(%E5%85%A5%E9%97%A8)/" title="Vue的使用(入门)">Vue的使用(入门)</a><time datetime="2021-11-26T16:28:39.096Z" title="发表于 2021-11-27 00:28:39">2021-11-27</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/11/25/Git%E7%9A%84%E4%BD%BF%E7%94%A8/" title="Git使用"><img src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Git使用"/></a><div class="content"><a class="title" href="/2021/11/25/Git%E7%9A%84%E4%BD%BF%E7%94%A8/" title="Git使用">Git使用</a><time datetime="2021-11-25T11:11:24.494Z" title="发表于 2021-11-25 19:11:24">2021-11-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/11/25/Java/mybatis-plus%E6%80%BB%E7%BB%93/" title="MyBatis-plus (MP) 使用"><img src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="MyBatis-plus (MP) 使用"/></a><div class="content"><a class="title" href="/2021/11/25/Java/mybatis-plus%E6%80%BB%E7%BB%93/" title="MyBatis-plus (MP) 使用">MyBatis-plus (MP) 使用</a><time datetime="2021-11-25T10:10:08.210Z" title="发表于 2021-11-25 18:10:08">2021-11-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/11/22/Java/RESTful%E9%A3%8E%E6%A0%BC/" title="RESTful风格"><img src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="RESTful风格"/></a><div class="content"><a class="title" href="/2021/11/22/Java/RESTful%E9%A3%8E%E6%A0%BC/" title="RESTful风格">RESTful风格</a><time datetime="2021-11-21T16:08:41.380Z" title="发表于 2021-11-22 00:08:41">2021-11-22</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2021 By Xiao wen</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
